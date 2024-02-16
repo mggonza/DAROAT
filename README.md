@@ -15,7 +15,7 @@ In Fig. 1 a depiction of the different blocks and their interconnections is pres
 
 ### Initial reconstruction method
 
-The measured sinogram is processed by matrix $\mathbf{A}^T$ generating an initial image corresponding to the LBP [Arridge_2016](https://arxiv.org/abs/1602.02027). This method is simple to implement and numerically efficient but usually introduces some artifacts.
+The measured sinogram is processed by matrix $\mathbf{A}^T$ generating an initial image corresponding to the LBP [Arridge_2016](https://arxiv.org/abs/1602.02027). This method is simple to implement and numerically efficient but usually introduces some artifacts. For this reason, this initial image is fed into an appropriate neural network, with a sufficiently large expressive capacity power, in order to correct artifacts and improve quality. This neural network is trained  separately to the other blocks in our system. In particular, we chose a Fully-Dense UNet (FD-UNet) architecture, which is well-known to be a competitive solution for OAT image reconstruction [Gonzalez_2023](https://arxiv.org/abs/2210.08099) 
 
 ```
 FDUNet(
