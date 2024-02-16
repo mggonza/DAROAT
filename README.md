@@ -15,6 +15,8 @@ In Fig. 1 a depiction of the different blocks and their interconnections is pres
 
 ### Initial reconstruction method
 
+The measured sinogram is processed by matrix $\mathbf{A}^T$ generating an initial image corresponding to the LBP solution in [Arridge_2016](https://arxiv.org/abs/1602.02027). This method is simple to implement and numerically efficient but usually introduces some artifacts.
+
 ```
 FDUNet(
   (conv1): Conv2d(1, 32, kernel_size=(3, 3), stride=(1, 1), padding=same)
