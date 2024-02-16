@@ -10,4 +10,5 @@ Our proposal is to use a conditional diffusion model to improve the image qualit
 In Fig. 1 a depiction of the different blocks and their interconnections is presented
 
 ![plot](./images/architecturev4.png)
-Figure 1. The forward diffusion process only acts during training phase. 3-tuples (V,K,Q) indicate the multi-head cross-attention mechanisms at each UNet's scales. Sinusoidal positional time embeddings are used for representing the time-steps in the reverse diffusion process.
+
+### Figure 1. The forward diffusion process only acts during training phase. 3-tuples (V,K,Q) indicate the multi-head cross-attention mechanisms at each UNet's scales. Sinusoidal positional time embeddings are used for representing the time-steps in the reverse diffusion process.
