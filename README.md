@@ -348,4 +348,10 @@ VanAE(
 
 ### 3. Conditional diffusion model in reduced dimension
 
-The conditional information corresponding to the initial image reconstruction patches is introduced in the reverse diffusion process (i.e. $p_{\theta}(\mathbf{x}_{t-1}|\mathbf{x}_t,g_\theta(\mathbf{y}_0))$ ). The cost function is then optimized using backpropagation techniques. Each step $t=1,\dots, T$ in the reverse process (i.e. $\epsilon_\theta(\mathbf{x}_t,g_\theta(\mathbf{y_0}),t)$) is modeled by a UNet architecture. We considered the default parameters implemented in the library [Diffusers]{https://huggingface.co/docs/diffusers/api/models/unet2d-cond}. We only modified the number of output channel at each scale with respect to the default ones to the following values (the same for each time-step $t$): (128, 256, 512, 1024). This was done for optimizing the use of GPU memory during training. Also, as we are not working with RGB images, the number of channels at the input and output for the UNet were set to 1.
+The conditional information corresponding to the initial image reconstruction patches is introduced in the reverse diffusion process (i.e. $p_{\theta}(\mathbf{x}_{t-1}|\mathbf{x}_t,g_\theta(\mathbf{y}_0))$ ). The cost function is then optimized using backpropagation techniques. Each step $t=1,\dots, T$ in the reverse process (i.e. $\epsilon_\theta(\mathbf{x}_t,g_\theta(\mathbf{y_0}),t)$) is modeled by a UNet architecture. We considered the default parameters implemented in the library [Diffusers](https://huggingface.co/docs/diffusers/api/models/unet2d-cond). We only modified the number of output channel at each scale with respect to the default ones to the following values (the same for each time-step $t$): (128, 256, 512, 1024). This was done for optimizing the use of GPU memory during training. Also, as we are not working with RGB images, the number of channels at the input and output for the UNet were set to 1.
+
+```
+Unet(
+```
+
+##### Soon we will be adding the implementation code of the architecture detailed above.
