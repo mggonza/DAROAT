@@ -15,7 +15,7 @@ In Fig. 1 a depiction of the different blocks and their interconnections is pres
 
 ### Initial reconstruction method
 
-The measured sinogram is processed by matrix $\mathbf{A}^T$ generating an initial image corresponding to the LBP [Arridge_2016](https://arxiv.org/abs/1602.02027). This method is simple to implement and numerically efficient but usually introduces some artifacts. For this reason, this initial image is fed into an appropriate neural network, with a sufficiently large expressive capacity power, in order to correct artifacts and improve quality. This neural network is trained  separately to the other blocks in our system. In particular, we chose a Fully-Dense UNet (FD-UNet) architecture, which is well-known to be a competitive solution for OAT image reconstruction [Gonzalez_2023](https://arxiv.org/abs/2210.08099) 
+The measured sinogram is processed by matrix $\mathbf{A}^T$ generating an initial image corresponding to the LBP [Arridge_2016](https://arxiv.org/abs/1602.02027). This method is simple to implement and numerically efficient but usually introduces some artifacts. For this reason, this initial image is fed into an appropriate neural network, with a sufficiently large expressive capacity power, in order to correct artifacts and improve quality. This neural network is trained  separately to the other blocks in our system. In particular, we chose a Fully-Dense UNet (FD-UNet) architecture, which is well-known to be a competitive solution for OAT image reconstruction [Gonzalez_2023](https://arxiv.org/abs/2210.08099). 
 
 ```
 FDUNet(
@@ -308,5 +308,40 @@ FDUNet(
     )
   )
   (conv2): Conv2d(64, 1, kernel_size=(1, 1), stride=(1, 1), padding=same)
+)
+```
+
+### Conditional information preprocessing (CIP)
+
+The initial reconstructed image from the previous block will be used as conditional information for the diffusion process. This information is passed to the diffusion model through a trainable function $g_\theta$. In our case, we considered $g_\theta$ as the encoder from a vanilla autoencoder.
+
+```
+VanAE(
+  (encoder): Sequential(
+    (0): Sequential(
+      (0): Linear(in_features=4096, out_features=3072, bias=True)
+      (1): ReLU()
+      (2): Dropout(p=0.0, inplace=False)
+    )
+    (1): Sequential(
+      (0): Linear(in_features=3072, out_features=2048, bias=True)
+      (1): ReLU()
+      (2): Dropout(p=0.0, inplace=False)
+    )
+    (2): Linear(in_features=2048, out_features=1024, bias=True)
+  )
+  (decoder): Sequential(
+    (0): Sequential(
+      (0): Linear(in_features=1024, out_features=2048, bias=True)
+      (1): ReLU()
+      (2): Dropout(p=0.0, inplace=False)
+    )
+    (1): Sequential(
+      (0): Linear(in_features=2048, out_features=3072, bias=True)
+      (1): ReLU()
+      (2): Dropout(p=0.0, inplace=False)
+    )
+    (2): Linear(in_features=3072, out_features=4096, bias=True)
+  )
 )
 ```
