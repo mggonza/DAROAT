@@ -15,7 +15,7 @@ In Fig. 1 a depiction of the different blocks and their interconnections is pres
 
 ### Initial reconstruction method
 
-```sh
+```
 FDUNet(
   (conv1): Conv2d(1, 32, kernel_size=(3, 3), stride=(1, 1), padding=same)
   (db1): DenseBlock(
