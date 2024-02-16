@@ -13,7 +13,7 @@ In Fig. 1 a depiction of the different blocks and their interconnections is pres
 
 ##### Figure 1. The forward diffusion process only acts during training phase. 3-tuples (V,K,Q) indicate the multi-head cross-attention mechanisms at each UNet's scales. Sinusoidal positional time embeddings are used for representing the time-steps in the reverse diffusion process.
 
-### Initial reconstruction method
+### 1. Initial reconstruction method
 
 The measured sinogram is processed by matrix $\mathbf{A}^T$ generating an initial image corresponding to the LBP [Arridge_2016](https://arxiv.org/abs/1602.02027). This method is simple to implement and numerically efficient but usually introduces some artifacts. For this reason, this initial image is fed into an appropriate neural network, with a sufficiently large expressive capacity power, in order to correct artifacts and improve quality. This neural network is trained  separately to the other blocks in our system. In particular, we chose a Fully-Dense UNet (FD-UNet) architecture, which is well-known to be a competitive solution for OAT image reconstruction [Gonzalez_2023](https://arxiv.org/abs/2210.08099). 
 
@@ -311,7 +311,7 @@ FDUNet(
 )
 ```
 
-### Conditional information preprocessing (CIP)
+### 2. Conditional information preprocessing (CIP)
 
 The initial reconstructed image from the previous block will be used as conditional information for the diffusion process. This information is passed to the diffusion model through a trainable function $g_\theta$. In our case, we considered $g_\theta$ as the encoder from a vanilla autoencoder.
 
@@ -345,3 +345,7 @@ VanAE(
   )
 )
 ```
+
+### 3. Conditional diffusion model in reduced dimension
+
+The conditional information corresponding to the initial image reconstruction patches is introduced in the reverse diffusion process (i.e. $p_{\theta}(\mathbf{x}_{t-1}|\mathbf{x}_t,g_\theta(\mathbf{y}_0))$ ). The cost function is then optimized using backpropagation techniques. Each step $t=1,\dots, T$ in the reverse process (i.e. $\epsilon_\theta(\mathbf{x}_t,g_\theta(\mathbf{y_0}),t)$) is modeled by a UNet architecture. We considered the default parameters implemented in the library [Diffusers]{https://huggingface.co/docs/diffusers/api/models/unet2d-cond}. We only modified the number of output channel at each scale with respect to the default ones to the following values (the same for each time-step $t$): (128, 256, 512, 1024). This was done for optimizing the use of GPU memory during training. Also, as we are not working with RGB images, the number of channels at the input and output for the UNet were set to 1.
